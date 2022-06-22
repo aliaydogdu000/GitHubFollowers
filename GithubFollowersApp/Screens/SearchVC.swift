@@ -7,6 +7,7 @@ class SearchVC: UIViewController {
     let imageLogo = UIImageView()
     let usernameTxtField = GFTextField()
     let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
+    var logoImageViewTopConstrains:NSLayoutConstraint!
     
     var isUsernameEntered:Bool{
         return !usernameTxtField.text!.isEmpty
@@ -23,18 +24,23 @@ class SearchVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        usernameTxtField.text = ""
         navigationController?.setNavigationBarHidden(true, animated: true)
         
         
     }
     func createDismissKeyboardTapGesture(){
-        let tap = UIGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        let tap = UIGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
     }
     func configureLogoImageview(){
         view.addSubview(imageLogo)
         imageLogo.translatesAutoresizingMaskIntoConstraints = false
-        imageLogo.image = UIImage(named:"gh-logo")!
+        imageLogo.image = Images.ghLogo
+        
+        let topConstraintsConstant :CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
+        logoImageViewTopConstrains = imageLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintsConstant)
+        logoImageViewTopConstrains.isActive = true
         
         NSLayoutConstraint.activate([
             imageLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 80),
@@ -64,11 +70,10 @@ class SearchVC: UIViewController {
         guard isUsernameEntered  else {
             presentGFAlertOnMainThread(title: "Empty Username", message: "Please enter a username.We need to know who to look for 🤔.", buttonTitle: "OK.")
             return
-            
             }
-        let followerListVC = FollowerListVC()
-        followerListVC.username = usernameTxtField.text
-        followerListVC.title = usernameTxtField.text
+        usernameTxtField.resignFirstResponder()
+        
+        let followerListVC = FollowerListVC(username: usernameTxtField.text!)
         navigationController?.pushViewController(followerListVC, animated: true)
     }
     
