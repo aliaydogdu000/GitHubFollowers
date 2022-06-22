@@ -12,6 +12,6 @@ struct User:Codable{
     let htmlUrl:String
     let following:Int
     let Followers:Int
-    let createdAt:String
+    let createdAt:Date
     
 }

@@ -9,7 +9,7 @@ protocol UserInfoVCDelegate: class {
     
 }
 
-class UserInfoVC: UIViewController {
+class UserInfoVC: GFDataLoadingVC {
     
     let headerView = UIView()
     let itemOne = UIView()
@@ -51,7 +51,7 @@ class UserInfoVC: UIViewController {
         self.add(childVC: repoItemVC, to: self.itemOne)
         self.add(childVC: followerItemVC, to: self.itemTwo)
         self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
-        self.dateLabel.text = "Github since \(user.createdAt.convertToDisplayFormat())"
+        self.dateLabel.text = "Github since \(user.createdAt.convertToMonthYearFormat())"
     }
     func configureVC(){
         view.backgroundColor = .systemBackground

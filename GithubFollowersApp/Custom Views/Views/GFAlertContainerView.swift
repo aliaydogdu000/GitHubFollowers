@@ -1,10 +1,13 @@
-
+//
+//  GFAlertContainerView.swift
+//  GithubFollowersApp
+//
+//  Created by Ali Aydoğdu on 22.06.2022.
+//
 
 import UIKit
-class GFAvatarImageView: UIImageView{
-    
-    let placeHolderImage = UIImage(named: "avatar-placeholder")!
-    let cache = NetworkManager.shared.cache
+
+class GFAlertContainerView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -14,14 +17,11 @@ class GFAvatarImageView: UIImageView{
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     private func configure(){
-        layer.cornerRadius = 10
-        clipsToBounds = true
-        image = placeHolderImage
+        backgroundColor = .systemBackground
+        layer.cornerRadius = 16
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.white.cgColor
         translatesAutoresizingMaskIntoConstraints = false
-        
     }
 }
-
-
