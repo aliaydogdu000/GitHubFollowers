@@ -20,26 +20,39 @@ class GFEmptyStateView: UIView {
         messageLabel.text = message
     }
     private func configure(){
+        configureMessageLabel()
+        configureLogoImage()
+    }
+    
+    private func configureMessageLabel(){
         addSubview(messageLabel)
-        addSubview(logoImageView)
-        
         messageLabel.numberOfLines = 3
         messageLabel.textColor = .secondaryLabel
         
-        logoImageView.image = UIImage(named: "empty-state-logo")
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        let messageLabelCenterYConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? -80 : -150
+        let messageLabelCenterYConstraints =  messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor,constant: messageLabelCenterYConstant)
+        messageLabelCenterYConstraints.isActive = true
         
         NSLayoutConstraint.activate([
-            messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor,constant: -150),
             messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 40),
             messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: -40),
-            messageLabel.heightAnchor.constraint(equalToConstant: 200),
-            
-            logoImageView.widthAnchor.constraint(equalTo: self.widthAnchor,multiplier: 1.3),
-            logoImageView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 1.3),
-            logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: 170),
-            logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: 40)
+            messageLabel.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
     
+    private func configureLogoImage(){
+        addSubview(logoImageView)
+        logoImageView.image = Images.emptyState
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let logoBottomConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 80 : 40
+        let logoBottomConstraint =  logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: logoBottomConstant)
+        logoBottomConstraint.isActive = true
+        
+        NSLayoutConstraint.activate([
+            logoImageView.widthAnchor.constraint(equalTo: self.widthAnchor,multiplier: 1.3),
+            logoImageView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 1.3),
+            logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: 170)
+        ])
+    }
 }
