@@ -6,7 +6,7 @@ class NetworkManager{
     
     static let shared = NetworkManager()
     private let basseUrl = "https://api.github.com/users/"
-    let cache = NSCache < NSString,UIImage >()
+    let cache = NSCache<NSString,UIImage>()
     
     
     private init(){}
@@ -39,14 +39,12 @@ class NetworkManager{
             }catch{
                 completed(.failure(.invalidData))
             }
-
         }
-    
         task.resume()
 }
     
     
-    func getUserInfo(for username:String,completed:@escaping(Result<User,GFError >) -> Void){
+    func getUserInfo(for username:String,completed:@escaping(Result<User,GFError>) -> Void){
         let endpoint = basseUrl + "\(username)"
         
         guard let url = URL(string: endpoint)else{
@@ -86,13 +84,11 @@ class NetworkManager{
         if let image = cache.object(forKey: cacheKey){
             completed(image)
             return
-            
         }
         
         guard let url = URL(string: urlString) else{
             completed(nil)
-            return
-            
+            return 
         }
         
         let task = URLSession.shared.dataTask(with: url) { [weak self] data,response,error in

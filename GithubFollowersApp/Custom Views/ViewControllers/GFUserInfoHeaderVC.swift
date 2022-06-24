@@ -25,13 +25,13 @@ class GFUserInfoHeaderVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSubview()
+        view.addSubviews(avatarImageView,userNameLabel,nameLabel,locationImageView,locationLabel,bioLabel)
         layoutUI()
         configureUIElements()
     }
     
     func configureUIElements(){
-        downloadAvatarImage()
+        avatarImageView.downloadImage(fromURL: user.avatarUrl )
         userNameLabel.text = user.login
         nameLabel.text = user.name ?? "No Name"
         locationLabel.text = user.location ?? " No Location"
@@ -40,28 +40,14 @@ class GFUserInfoHeaderVC: UIViewController {
         
         locationImageView.image = SFSymbols.location
         locationImageView.tintColor = .secondaryLabel
-        
-        
-        
-        
     }
-    func downloadAvatarImage(){
-        NetworkManager.shared.downloadImage(from: user.avatarUrl){[weak self] image in
-            guard let self = self else {return}
-            DispatchQueue.main.async {self.avatarImageView.image = image}
-        }
-    }
-    
-    func addSubview(){
-        view.addSubviews(avatarImageView,userNameLabel,nameLabel,locationImageView,locationLabel,bioLabel)
-    }
+   
     func layoutUI(){
         let padding : CGFloat  = 20
         let textImagePadding:CGFloat = 12
         locationImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-        
             avatarImageView.topAnchor.constraint(equalTo: view.topAnchor,constant: padding),
             avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor ),
             avatarImageView.widthAnchor.constraint(equalToConstant: 90),
@@ -91,10 +77,6 @@ class GFUserInfoHeaderVC: UIViewController {
             bioLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             bioLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bioLabel.heightAnchor.constraint(equalToConstant: 60)
-            
         ])
     }
-
-    
-
 }

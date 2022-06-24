@@ -8,6 +8,7 @@ class GFTitleLabel: UILabel {
         super.init(frame: frame)
         configure()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -17,6 +18,7 @@ class GFTitleLabel: UILabel {
         self.textAlignment = textalignment
         self.font = UIFont.systemFont(ofSize: fontSize,weight: .bold)
     }
+    
     private func configure(){
         textColor = .label
         adjustsFontSizeToFitWidth = true

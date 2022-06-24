@@ -7,12 +7,12 @@ class SearchVC: UIViewController {
     let imageLogo = UIImageView()
     let usernameTxtField = GFTextField()
     let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
-    var logoImageViewTopConstrains:NSLayoutConstraint!
+    
     
     var isUsernameEntered:Bool{
         return !usernameTxtField.text!.isEmpty
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -30,24 +30,25 @@ class SearchVC: UIViewController {
         
         
     }
+    
     func createDismissKeyboardTapGesture(){
         let tap = UIGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
     }
+    
     func configureLogoImageview(){
         imageLogo.translatesAutoresizingMaskIntoConstraints = false
         imageLogo.image = Images.ghLogo
         
         let topConstraintsConstant :CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
-        logoImageViewTopConstrains = imageLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintsConstant)
-        logoImageViewTopConstrains.isActive = true
         
         NSLayoutConstraint.activate([
+            imageLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintsConstant),
             imageLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 80),
             imageLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageLogo.heightAnchor.constraint(equalToConstant: 200),
             imageLogo.widthAnchor.constraint(equalToConstant: 200),
-             
+            
             
         ])
         
@@ -61,15 +62,14 @@ class SearchVC: UIViewController {
             usernameTxtField.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 50),
             usernameTxtField.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -50),
             usernameTxtField.heightAnchor.constraint(equalToConstant: 50)
-            
-            
         ])
     }
+    
     @objc func pushFollowerListVC(){
         guard isUsernameEntered  else {
             presentGFAlertOnMainThread(title: "Empty Username", message: "Please enter a username.We need to know who to look for 🤔.", buttonTitle: "OK.")
             return
-            }
+        }
         usernameTxtField.resignFirstResponder()
         
         let followerListVC = FollowerListVC(username: usernameTxtField.text!)

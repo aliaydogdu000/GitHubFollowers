@@ -11,7 +11,6 @@ class FavoritesVC: GFDataLoadingVC {
         super.viewDidLoad()
         configureViewController()
         configureTableView()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -24,7 +23,6 @@ class FavoritesVC: GFDataLoadingVC {
         title = "Favorites"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
-    
     
     func configureTableView(){
         view.addSubview(tableView)
@@ -44,26 +42,26 @@ class FavoritesVC: GFDataLoadingVC {
             
             switch result {
             case .success(let favorites):
-                
-                if favorites .isEmpty{
-                    self.showEmptyStateView(with: "No Favorites.", in: self.view)
-                } else {
-                    self.favorites = favorites
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        self.view.bringSubviewToFront(self.tableView)
-                    }
-                }
-                
+                self.updateUI(with: favorites)
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Something went wrong!", message: error.rawValue, buttonTitle: "OK!")
             }
-            
         }
     }
     
-    
+    func updateUI(with favorites :[Follower]){
+        if favorites .isEmpty{
+            self.showEmptyStateView(with: "No Favorites.", in: self.view)
+        } else {
+            self.favorites = favorites
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.view.bringSubviewToFront(self.tableView)
+            }
+        }
+    }
 }
+
 extension FavoritesVC: UITableViewDataSource, UITableViewDelegate {
     
     
@@ -96,9 +94,5 @@ extension FavoritesVC: UITableViewDataSource, UITableViewDelegate {
             }
             self.presentGFAlertOnMainThread(title: "Unable to remove.", message: error.rawValue, buttonTitle: "OK!")
         }
-        
-        
-        
     }
-    
 }

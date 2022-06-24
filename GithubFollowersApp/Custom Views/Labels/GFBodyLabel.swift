@@ -8,6 +8,7 @@ class GFBodyLabel: UILabel {
         super.init(frame: frame)
         configure()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -16,6 +17,7 @@ class GFBodyLabel: UILabel {
         self.init(frame: .zero)
         self.textAlignment = textalignment
     }
+    
     private func configure(){
         textColor = .secondaryLabel
         font = UIFont.preferredFont(forTextStyle: .body)

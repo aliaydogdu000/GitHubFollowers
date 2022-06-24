@@ -21,7 +21,9 @@ enum PersistenceManager{
                 switch actionType {
                 case .add:
                     guard !favorites.contains(favorite)else{complete(.alreadyInFavorites)
-                        return}
+                        return
+                        
+                    }
                     favorites.append(favorite)
                 case .remove:
                     favorites.removeAll{$0.login == favorite.login}

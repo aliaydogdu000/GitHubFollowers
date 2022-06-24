@@ -3,7 +3,6 @@
 import UIKit
 
 class FavoriteCell: UITableViewCell {
-
     static let reuseID = "FavoriteCell"
     
     let avatarImageView = GFAvatarImageView(frame: .zero)
@@ -19,11 +18,8 @@ class FavoriteCell: UITableViewCell {
     }
     
     func set(favorite:Follower){
+        avatarImageView.downloadImage(fromURL: favorite.avatarUrl )
         usernameLabel.text = favorite.login
-        NetworkManager.shared.downloadImage(from: favorite.avatarUrl){[weak self] image in
-            guard let self = self else {return}
-            DispatchQueue.main.async {self.avatarImageView.image = image}
-        }
     }
     
     private func configure(){
@@ -41,8 +37,6 @@ class FavoriteCell: UITableViewCell {
             usernameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor,constant: 24),
             usernameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: -padding),
             usernameLabel.heightAnchor.constraint(equalToConstant: 40),
-            
-            
         ])
     }
 }
