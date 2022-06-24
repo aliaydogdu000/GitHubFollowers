@@ -8,6 +8,9 @@ protocol UserInfoVCDelegate: class {
 
 class UserInfoVC: GFDataLoadingVC {
     
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    
     let headerView = UIView()
     let itemOne = UIView()
     let itemTwo = UIView()
@@ -21,8 +24,22 @@ class UserInfoVC: GFDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureVC()
+        configureScrollView()
         layoutUI()
         getUserInfo()
+    }
+    
+    func configureScrollView(){
+        view.addSubview(scrollView)
+        scrollView.addSubviews(contentView )
+        scrollView.pinToEdges(of: view)
+        contentView.pinToEdges(of: scrollView)
+        
+        NSLayoutConstraint.activate([
+            contentView.widthAnchor.constraint(equalTo:  scrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 600)
+        ])
+        
     }
     func getUserInfo(){
         NetworkManager.shared.getUserInfo(for: userName) { [weak self] result in
@@ -57,19 +74,18 @@ class UserInfoVC: GFDataLoadingVC {
         
         itemViews = [headerView,itemOne,itemTwo,dateLabel]
         for itemView in itemViews{
-            view.addSubview(itemView)
+            contentView.addSubview(itemView)
             itemView.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
-                itemView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: padding),
-                itemView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -padding),
+                itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: padding),
+                itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -padding),
             ])
         }
         
-        
         NSLayoutConstraint.activate([
             
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.topAnchor.constraint(equalTo: contentView .topAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 180),
             
             itemOne.topAnchor.constraint(equalTo: headerView.bottomAnchor,constant: padding),
@@ -80,7 +96,6 @@ class UserInfoVC: GFDataLoadingVC {
             
             dateLabel.topAnchor.constraint(equalTo: itemTwo.bottomAnchor,constant: padding),
             dateLabel.heightAnchor.constraint(equalToConstant: 18)
-            
         ])
     }
     func add(childVC:UIViewController,to containerView:UIView ){
@@ -93,10 +108,7 @@ class UserInfoVC: GFDataLoadingVC {
     @objc func dismissVC(){
         dismiss(animated: true)
     }
-    
-    
 }
-
 
 extension UserInfoVC:GFRepoItemVCDelegate{
     
@@ -107,8 +119,6 @@ extension UserInfoVC:GFRepoItemVCDelegate{
         }
         presentSafariVC(with: url)
     }
-    
-    
 }
 
 extension UserInfoVC:GFFollowerItemVCDelegate{
@@ -118,11 +128,7 @@ extension UserInfoVC:GFFollowerItemVCDelegate{
             presentGFAlertOnMainThread(title: "No Followers.", message: "This user has no followers.", buttonTitle: "SO SAD!")
             return
         }
-        
         delegate.didRequestFollowers(for: user.login)
         dismissVC()
     }
-    
-    
-    
 }
