@@ -3,10 +3,7 @@
 import UIKit
 
 protocol UserInfoVCDelegate: class {
-    
-    func didTapGitHubProfile(for user:User)
-    func didTapGetFollowers(for user : User)
-    
+    func didRequestFollowers(for username:String)
 }
 
 class UserInfoVC: GFDataLoadingVC {
@@ -19,7 +16,7 @@ class UserInfoVC: GFDataLoadingVC {
     
     
     var userName : String!
-    weak var delegate:FollowerListVCDelegate!
+    weak var delegate:UserInfoVCDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,14 +39,9 @@ class UserInfoVC: GFDataLoadingVC {
         }
     }
     func configureUIElements(with user:User){
-        let repoItemVC = GFRepoItemVC(user: user)
-        repoItemVC.delegate = self
         
-        let followerItemVC = GFFollowerItemVC(user: user)
-        followerItemVC.delegate = self
-        
-        self.add(childVC: repoItemVC, to: self.itemOne)
-        self.add(childVC: followerItemVC, to: self.itemTwo)
+        self.add(childVC: GFRepoItemVC(user: user,delegate: self), to: self.itemOne)
+        self.add(childVC: GFFollowerItemVC(user: user,delegate: self), to: self.itemTwo)
         self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
         self.dateLabel.text = "Github since \(user.createdAt.convertToMonthYearFormat())"
     }
@@ -73,10 +65,10 @@ class UserInfoVC: GFDataLoadingVC {
                 itemView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -padding),
             ])
         }
-     
+        
         
         NSLayoutConstraint.activate([
-        
+            
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 180),
             
@@ -88,7 +80,7 @@ class UserInfoVC: GFDataLoadingVC {
             
             dateLabel.topAnchor.constraint(equalTo: itemTwo.bottomAnchor,constant: padding),
             dateLabel.heightAnchor.constraint(equalToConstant: 18)
-             
+            
         ])
     }
     func add(childVC:UIViewController,to containerView:UIView ){
@@ -101,38 +93,36 @@ class UserInfoVC: GFDataLoadingVC {
     @objc func dismissVC(){
         dismiss(animated: true)
     }
-   
-
+    
+    
 }
-extension UserInfoVC:UserInfoVCDelegate{
+
+
+extension UserInfoVC:GFRepoItemVCDelegate{
+    
     func didTapGitHubProfile(for user: User) {
         guard let url = URL(string: user.htmlUrl) else{
             presentGFAlertOnMainThread(title: "Invalid URL", message: "The url attached to this user invalid.", buttonTitle: "OK!")
             return
         }
-       presentSafariVC(with: url)
+        presentSafariVC(with: url)
     }
-    
-    
-    func didTapGetFollowers(for user: User) {
-        
-            guard user.Followers !=  0 else {
-                presentGFAlertOnMainThread(title: "No Followers.", message: "This user has no followers.", buttonTitle: "SO SAD!")
-                return
-            }
-                
-        delegate.didRequestFollowers(for: user.login)
-            dismissVC()
-        
-    }
-    
-    
-    
-    
-    
-    
     
     
 }
 
-
+extension UserInfoVC:GFFollowerItemVCDelegate{
+    
+    func didTapGetFollowers(for user: User) {
+        guard user.Followers !=  0 else {
+            presentGFAlertOnMainThread(title: "No Followers.", message: "This user has no followers.", buttonTitle: "SO SAD!")
+            return
+        }
+        
+        delegate.didRequestFollowers(for: user.login)
+        dismissVC()
+    }
+    
+    
+    
+}
