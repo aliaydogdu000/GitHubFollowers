@@ -15,7 +15,7 @@ class FollowerListVC: GFDataLoadingVC {
     var isLoadingMore = false
     
     var collectionView:UICollectionView!
-    var dataSource:UICollectionViewDiffableDataSource<Section,Follower>!
+    var dataSource:UICollectionViewDiffableDataSource<Section, Follower>!
     
     init(username:String){
         super.init(nibName: nil, bundle: nil)
@@ -77,6 +77,7 @@ class FollowerListVC: GFDataLoadingVC {
             switch result{
             case .success(let followers):
                 self.updateUI(with: followers)
+                
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Bad Stuff Happend", message: error.rawValue, buttonTitle: "OK!")
             }
@@ -99,7 +100,7 @@ class FollowerListVC: GFDataLoadingVC {
     }
     
     func configureDataSource(){
-        dataSource = UICollectionViewDiffableDataSource<Section,Follower>(collectionView: collectionView,cellProvider:{ ( collectionView,indexPath,follower)->UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<Section, Follower>(collectionView: collectionView, cellProvider:{ ( collectionView,indexPath,follower) -> UICollectionViewCell? in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.reuseID, for: indexPath) as! FollowerCell
             cell.set(follower: follower)
             return cell
@@ -107,7 +108,7 @@ class FollowerListVC: GFDataLoadingVC {
     }
     
     func updateData(on followers:[Follower]){
-        var snapShot = NSDiffableDataSourceSnapshot<Section,Follower>()
+        var snapShot = NSDiffableDataSourceSnapshot<Section, Follower>()
         snapShot.appendSections([.main])
         snapShot.appendItems(followers)
         DispatchQueue.main.async {  self.dataSource.apply(snapShot,animatingDifferences: true) }
@@ -115,6 +116,7 @@ class FollowerListVC: GFDataLoadingVC {
     
     @objc func addButtonTapped(){
         showLoadingView()
+        
         NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
             guard let self = self else {return}
             self.dismissLoadingView()
@@ -122,6 +124,7 @@ class FollowerListVC: GFDataLoadingVC {
             switch result{
             case .success(let user):
                 self.addUserToFavorites(user: user)
+                
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Something went wrong.", message: error.rawValue, buttonTitle: "OK!")
             }
@@ -144,6 +147,7 @@ class FollowerListVC: GFDataLoadingVC {
 }
 
 extension FollowerListVC : UICollectionViewDelegate{
+    
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
@@ -169,6 +173,7 @@ extension FollowerListVC : UICollectionViewDelegate{
 }
 
 extension FollowerListVC : UISearchResultsUpdating{
+    
     func updateSearchResults(for searchController: UISearchController) {
         guard let filter = searchController.searchBar.text, !filter.isEmpty else{
             filteredFollowers.removeAll()

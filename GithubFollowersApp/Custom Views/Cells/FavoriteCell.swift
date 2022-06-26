@@ -3,8 +3,8 @@
 import UIKit
 
 class FavoriteCell: UITableViewCell {
-    static let reuseID = "FavoriteCell"
     
+    static let reuseID = "FavoriteCell"
     let avatarImageView = GFAvatarImageView(frame: .zero)
     let usernameLabel = GFTitleLabel(textalignment: .left, fontSize: 26)
     
@@ -23,7 +23,7 @@ class FavoriteCell: UITableViewCell {
     }
     
     private func configure(){
-        addSubviews(avatarImageView,usernameLabel)
+        addSubviews(avatarImageView, usernameLabel)
         accessoryType = .disclosureIndicator
         let padding :CGFloat = 12
         

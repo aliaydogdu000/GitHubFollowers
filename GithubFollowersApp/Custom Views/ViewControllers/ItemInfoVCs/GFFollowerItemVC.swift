@@ -1,16 +1,15 @@
 
 import UIKit
 protocol GFFollowerItemVCDelegate: class {
-    
     func didTapGetFollowers(for user : User)
     
 }
 
 class GFFollowerItemVC: GFItemInfoVC {
     
-    weak var delegate :GFFollowerItemVCDelegate!
+    weak var delegate : GFFollowerItemVCDelegate!
 
-    init(user:User,delegate:GFFollowerItemVCDelegate){
+    init(user:User, delegate: GFFollowerItemVCDelegate){
         super.init(user: user)
         self.delegate = delegate
     }

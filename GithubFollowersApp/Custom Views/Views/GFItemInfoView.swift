@@ -2,10 +2,11 @@
 
 import UIKit
 
+enum ItemInfoTypes{
+        case repos,gists,followers,following
+}
+
 class GFItemInfoView: UIView {
-    enum ItemInfoTypes{
-            case repos,gists,followers,following
-    }
     
     let symbolImageView = UIImageView()
     let titleLabel = GFTitleLabel(textalignment: .left, fontSize: 14)
@@ -22,7 +23,7 @@ class GFItemInfoView: UIView {
     }
     
     private func configure(){
-        addSubviews(symbolImageView,titleLabel,countLabel)
+        addSubviews(symbolImageView, titleLabel, countLabel)
         
         symbolImageView.translatesAutoresizingMaskIntoConstraints = false
         symbolImageView.contentMode = .scaleAspectFill
@@ -46,7 +47,7 @@ class GFItemInfoView: UIView {
         ])
     }
     
-    func set(itemInfoType:ItemInfoTypes,withCount count:Int){
+    func set(itemInfoType:ItemInfoTypes, withCount count: Int){
         switch itemInfoType {
         case .repos:
             symbolImageView.image = SFSymbols.repos

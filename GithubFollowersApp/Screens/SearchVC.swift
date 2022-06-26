@@ -9,14 +9,14 @@ class SearchVC: UIViewController {
     let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
     
     
-    var isUsernameEntered:Bool{
+    var isUsernameEntered: Bool{
         return !usernameTxtField.text!.isEmpty
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubviews(imageLogo,usernameTxtField,callToActionButton)
+        view.addSubviews(imageLogo, usernameTxtField, callToActionButton)
         configureLogoImageview()
         configureTextField()
         configureButton()
@@ -36,20 +36,28 @@ class SearchVC: UIViewController {
         view.addGestureRecognizer(tap)
     }
     
+    @objc func pushFollowerListVC(){
+        guard isUsernameEntered  else {
+            presentGFAlertOnMainThread(title: "Empty Username", message: "Please enter a username.We need to know who to look for 🤔.", buttonTitle: "OK.")
+            return
+        }
+        usernameTxtField.resignFirstResponder()
+        
+        let followerListVC = FollowerListVC(username: usernameTxtField.text!)
+        navigationController?.pushViewController(followerListVC, animated: true)
+    }
+    
     func configureLogoImageview(){
         imageLogo.translatesAutoresizingMaskIntoConstraints = false
         imageLogo.image = Images.ghLogo
         
-        let topConstraintsConstant :CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
+        let topConstraintsConstant : CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
         
         NSLayoutConstraint.activate([
             imageLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintsConstant),
-            imageLogo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 80),
             imageLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageLogo.heightAnchor.constraint(equalToConstant: 200),
             imageLogo.widthAnchor.constraint(equalToConstant: 200),
-            
-            
         ])
         
     }
@@ -65,16 +73,7 @@ class SearchVC: UIViewController {
         ])
     }
     
-    @objc func pushFollowerListVC(){
-        guard isUsernameEntered  else {
-            presentGFAlertOnMainThread(title: "Empty Username", message: "Please enter a username.We need to know who to look for 🤔.", buttonTitle: "OK.")
-            return
-        }
-        usernameTxtField.resignFirstResponder()
-        
-        let followerListVC = FollowerListVC(username: usernameTxtField.text!)
-        navigationController?.pushViewController(followerListVC, animated: true)
-    }
+    
     
     func configureButton(){
         callToActionButton.addTarget(self, action: #selector(pushFollowerListVC), for: .touchUpInside)
@@ -88,6 +87,7 @@ class SearchVC: UIViewController {
     }
     
 }
+
 extension SearchVC: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         pushFollowerListVC()

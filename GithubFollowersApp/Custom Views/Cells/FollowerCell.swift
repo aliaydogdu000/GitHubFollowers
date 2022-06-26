@@ -2,8 +2,8 @@
 import UIKit
 
 class FollowerCell : UICollectionViewCell {
-    static let reuseID = "Follower Cell"
     
+    static let reuseID = "Follower Cell"
     let avatarImageView = GFAvatarImageView(frame: .zero)
     let usernameLabel = GFTitleLabel(textalignment: .center, fontSize: 16)
     
@@ -22,7 +22,7 @@ class FollowerCell : UICollectionViewCell {
     }
     
     private func configure(){
-        addSubviews(avatarImageView,usernameLabel)
+        addSubviews(avatarImageView, usernameLabel)
         
         let padding : CGFloat = 8
         
@@ -32,7 +32,7 @@ class FollowerCell : UICollectionViewCell {
             avatarImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -padding),
             avatarImageView.heightAnchor.constraint(equalTo: avatarImageView.widthAnchor),
                 
-            usernameLabel.topAnchor.constraint(equalTo: avatarImageView.topAnchor,constant: 12),
+            usernameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor,constant: 12),
             usernameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: padding),
             usernameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -padding),
             usernameLabel.heightAnchor.constraint(equalToConstant: 20)

@@ -15,7 +15,7 @@ class GFAlertVC: UIViewController {
     
     let padding : CGFloat = 20
     
-    init(title: String,message:String,buttonTitle:String){
+    init(title: String, message:String, buttonTitle:String){
         super.init(nibName: nil, bundle: nil)
         self.alertTitle = title
         self.message = message
@@ -29,7 +29,7 @@ class GFAlertVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
-        view.addSubviews(containerView,titleLabel,actionButton,messageLabel)
+        view.addSubviews(containerView, titleLabel, actionButton, messageLabel)
          
         configureContainer()
         configureTitleLabel()
@@ -75,8 +75,8 @@ class GFAlertVC: UIViewController {
         
         NSLayoutConstraint.activate([
             messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,constant: 8),
-            messageLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor,constant: padding),
-            messageLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor,constant: -padding),
+            messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,constant: padding),
+            messageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,constant: -padding),
             messageLabel.bottomAnchor.constraint(equalTo: actionButton.topAnchor,constant: -12)
         ])
     }

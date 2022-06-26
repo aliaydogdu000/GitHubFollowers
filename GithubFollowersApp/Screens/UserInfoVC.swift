@@ -29,6 +29,12 @@ class UserInfoVC: GFDataLoadingVC {
         getUserInfo()
     }
     
+    func configureVC(){
+        view.backgroundColor = .systemBackground
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+        navigationItem.rightBarButtonItem = doneButton
+    }
+    
     func configureScrollView(){
         view.addSubview(scrollView)
         scrollView.addSubviews(contentView )
@@ -41,6 +47,7 @@ class UserInfoVC: GFDataLoadingVC {
         ])
         
     }
+    
     func getUserInfo(){
         NetworkManager.shared.getUserInfo(for: userName) { [weak self] result in
             guard let self = self else{return}
@@ -55,6 +62,7 @@ class UserInfoVC: GFDataLoadingVC {
             }
         }
     }
+    
     func configureUIElements(with user:User){
         
         self.add(childVC: GFRepoItemVC(user: user,delegate: self), to: self.itemOne)
@@ -62,17 +70,14 @@ class UserInfoVC: GFDataLoadingVC {
         self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
         self.dateLabel.text = "Github since \(user.createdAt.convertToMonthYearFormat())"
     }
-    func configureVC(){
-        view.backgroundColor = .systemBackground
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
-        navigationItem.rightBarButtonItem = doneButton
-    }
+    
     
     func layoutUI(){
         let padding : CGFloat = 20
         let itemHeight: CGFloat = 140
         
-        itemViews = [headerView,itemOne,itemTwo,dateLabel]
+        itemViews = [headerView, itemOne, itemTwo, dateLabel]
+        
         for itemView in itemViews{
             contentView.addSubview(itemView)
             itemView.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +91,7 @@ class UserInfoVC: GFDataLoadingVC {
         NSLayoutConstraint.activate([
             
             headerView.topAnchor.constraint(equalTo: contentView .topAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 180),
+            headerView.heightAnchor.constraint(equalToConstant: 210),
             
             itemOne.topAnchor.constraint(equalTo: headerView.bottomAnchor,constant: padding),
             itemOne.heightAnchor.constraint(equalToConstant: itemHeight),
@@ -95,10 +100,11 @@ class UserInfoVC: GFDataLoadingVC {
             itemTwo.heightAnchor.constraint(equalToConstant: itemHeight),
             
             dateLabel.topAnchor.constraint(equalTo: itemTwo.bottomAnchor,constant: padding),
-            dateLabel.heightAnchor.constraint(equalToConstant: 18)
+            dateLabel.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-    func add(childVC:UIViewController,to containerView:UIView ){
+    
+    func add(childVC:UIViewController, to containerView: UIView ){
         addChild(childVC)
         containerView.addSubview(childVC.view)
         childVC.view.frame = containerView.bounds
@@ -121,7 +127,7 @@ extension UserInfoVC:GFRepoItemVCDelegate{
     }
 }
 
-extension UserInfoVC:GFFollowerItemVCDelegate{
+extension UserInfoVC: GFFollowerItemVCDelegate{
     
     func didTapGetFollowers(for user: User) {
         guard user.Followers !=  0 else {
