@@ -50,7 +50,7 @@ class GFEmptyStateView: UIView {
         NSLayoutConstraint.activate([
             logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor,constant: logoBottomConstant), 
             logoImageView.widthAnchor.constraint(equalTo: self.widthAnchor,multiplier: 1.3),
-            logoImageView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 1.3),
+            logoImageView.heightAnchor.constraint(equalTo: self.widthAnchor,multiplier: 1.3),
             logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: 170)
         ])
     }

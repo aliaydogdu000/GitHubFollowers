@@ -130,7 +130,7 @@ extension UserInfoVC:GFRepoItemVCDelegate{
 extension UserInfoVC: GFFollowerItemVCDelegate{
     
     func didTapGetFollowers(for user: User) {
-        guard user.Followers !=  0 else {
+        guard user.followers !=  0 else {
             presentGFAlertOnMainThread(title: "No Followers.", message: "This user has no followers.", buttonTitle: "SO SAD!")
             return
         }

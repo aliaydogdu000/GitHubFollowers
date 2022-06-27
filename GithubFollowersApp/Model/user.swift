@@ -1,5 +1,3 @@
-
-
 import Foundation
 
 struct User: Codable {
@@ -12,6 +10,6 @@ struct User: Codable {
     let publicGists: Int
     let htmlUrl: String
     let following: Int
-    let Followers: Int
+    let followers: Int
     let createdAt: Date
 }
